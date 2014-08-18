@@ -1,6 +1,6 @@
 Name:		vboot-utils
 Version:	20130222gite6cf2c2
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 ExclusiveArch:	%{arm} %{ix86} x86_64
 
@@ -90,6 +90,9 @@ make runtests || true
 %doc LICENSE README
 
 %changelog
+* Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 20130222gite6cf2c2-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 20130222gite6cf2c2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
