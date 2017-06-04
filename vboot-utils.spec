@@ -1,37 +1,29 @@
-Name:		vboot-utils
-Version:	20130222gite6cf2c2
-Release:	10%{?dist}
-Summary:	Verified Boot Utility from Chromium OS
-ExclusiveArch:	%{arm} %{ix86} x86_64
+%define gitshort a1c5f7c
 
-Group:		Applications/System
+Name:		vboot-utils
+Version:	20170302
+Release:	1.git%{gitshort}%{?dist}
+Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
+URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
+
+ExclusiveArch:	%{arm} aarch64 %{ix86} x86_64
+
 # The source for this package was pulled from upstream's vcs.  Use the
 # following commands to generate the tarball:
 #  git clone https://git.chromium.org/git/chromiumos/platform/vboot_reference.git
 #  cd vboot_reference/
-#  git archive --format=tar --prefix=vboot-utils-20130222gite6cf2c2/ e6cf2c2 | xz > vboot-utils-20130222gite6c.tar.xz
-URL:		http://gitrw.chromium.org/gitweb/?p=chromiumos/platform/vboot_reference.git
-Source0:	%{name}-%{version}.tar.xz
-
+#  git archive --format=tar --prefix=vboot-utils-a1c5f7c/ a1c5f7c | xz > vboot-utils-a1c5f7c.tar.xz
+Source0:	%{name}-%{gitshort}.tar.xz
 
 ## Patch0 disabled static building.
 Patch0:		vboot-utils-00-disable-static-linking.patch
 
-## Patch1 fixes printf formating issues that break  the build.
-## http://code.google.com/p/chromium-os/issues/detail?id=37804
-Patch1:		vboot-utils-01-bmpblk_utility-fix-printf.patch
-
 #make sure get the rpmbuild flags passed in
-Patch2:		vboot-utils-cflags.patch
-
-# some fixes for picker compile
-Patch3:		vboot-utils-strncat.patch
-Patch4:		vboot-utils-unused.patch
-Patch5:		vboot-utils-pthread.patch
+Patch1:		vboot-utils-cflags.patch
 
 
-BuildRequires:	openssl-devel
+BuildRequires:	compat-openssl10-devel
 BuildRequires:	trousers-devel
 BuildRequires:	libyaml-devel
 BuildRequires:	xz-devel
@@ -47,18 +39,14 @@ Pack and sign the kernel, manage gpt partitions.
 
 
 %prep
-%setup -q
-%patch0 -p0 -b .nostatic
-%patch1 -p0 -b .fixprintf
-%patch2 -p1 -b .cflags
-%patch3 -p1 -b .strncat
-%patch4 -p1 -b .unused
-%patch5 -p1 -b .pthread
+%setup -q -n %{name}-%{gitshort}
+%patch0 -p1 -b .nostatic
+%patch1 -p1 -b .cflags
 
 
 %build
 
-%ifarch %{arm}
+%ifarch %{arm} aarch64
 %global ARCH arm
 %endif
 
@@ -74,10 +62,12 @@ Pack and sign the kernel, manage gpt partitions.
 make V=1 ARCH=%{ARCH} COMMON_FLAGS="$RPM_OPT_FLAGS"
 
 
-
 %install
-make install V=1 DESTDIR=%{buildroot}%{_bindir} ARCH=%{ARCH} COMMON_FLAGS="$RPM_OPT_FLAGS"
+make install V=1 DESTDIR=%{buildroot}/usr ARCH=%{ARCH} COMMON_FLAGS="$RPM_OPT_FLAGS"
 
+# Remove unneeded build artifacts
+rm -rf %{buildroot}/usr/lib/pkgconfig/
+rm -rf %{buildroot}/usr/default/
 
 ## Tests are enabled but ignored (will not break the build).
 ## This is because tests fail in a chroot (mock) but work otherwise.
@@ -86,10 +76,15 @@ make runtests || true
 
 
 %files
+%license LICENSE
+%doc README
 %{_bindir}/*
-%doc LICENSE README
 
 %changelog
+* Sun Jun  4 2017 Peter Robinson <pbrobinson@fedoraproject.org> 20170302-1.gita1c5f7c
+- Move to newer upstream snapshot needed for some devices
+- Spec cleanups
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 20130222gite6cf2c2-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
@@ -111,7 +106,7 @@ make runtests || true
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 20130222gite6cf2c2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
-* Thu Apr 07 2013 Jon Disnard <jdisnard@gmail.com> 20130222gite6cf2c2-3
+* Thu Apr 04 2013 Jon Disnard <jdisnard@gmail.com> 20130222gite6cf2c2-3
 - Clean up spec file
 - Honor rpmbuild CFLAGS
 - Fix strncat arguments in cgpt/cgpt_add.c
@@ -144,4 +139,3 @@ make runtests || true
 - Patch0 prevents static building.
 - Patch1 fixes minor printf formating bug in c++ code.
 - tests disabled as they do not work in mock chroot.
-
