@@ -2,7 +2,7 @@
 
 Name:		vboot-utils
 Version:	20170302
-Release:	1.git%{gitshort}%{?dist}
+Release:	2.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -81,6 +81,9 @@ make runtests || true
 %{_bindir}/*
 
 %changelog
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 20170302-2.gita1c5f7c
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sun Jun  4 2017 Peter Robinson <pbrobinson@fedoraproject.org> 20170302-1.gita1c5f7c
 - Move to newer upstream snapshot needed for some devices
 - Spec cleanups
