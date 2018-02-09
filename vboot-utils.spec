@@ -2,7 +2,7 @@
 
 Name:		vboot-utils
 Version:	20170302
-Release:	3.git%{gitshort}%{?dist}
+Release:	4.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -81,6 +81,9 @@ make runtests || true
 %{_bindir}/*
 
 %changelog
+* Fri Feb 09 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 20170302-4.gita1c5f7c
+- Escape macros in %%changelog
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 20170302-3.gita1c5f7c
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
@@ -119,7 +122,7 @@ make runtests || true
 
 * Sat Feb 23 2013 Jon Disnard <jdisnard@gmail.com> 20130222gite6cf2c2-2
 - Put back wcohen's fixes for i686 builds.
-- Put back the patch to fix bmpblk_utility.cc printf formating %ld -> %zu
+- Put back the patch to fix bmpblk_utility.cc printf formating %%ld -> %%zu
 - Put back BR for gcc-c++ & libstdc++
 
 * Fri Feb 22 2013 Jon Disnard <jdisnard@gmail.com> 20130222gite6cf2c2-1
