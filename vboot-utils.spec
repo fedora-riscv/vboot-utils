@@ -2,7 +2,7 @@
 
 Name:		vboot-utils
 Version:	20170302
-Release:	4.git%{gitshort}%{?dist}
+Release:	5.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -31,7 +31,7 @@ BuildRequires:	libuuid-devel
 
 
 # for the test scripts
-BuildRequires:	python
+BuildRequires:	python2
 
 %description
 Verified boot is a collection of utilities helpful for chromebook computer.
@@ -81,6 +81,10 @@ make runtests || true
 %{_bindir}/*
 
 %changelog
+* Sun Mar 18 2018 Iryna Shcherbina <ishcherb@redhat.com> - 20170302-5.gita1c5f7c
+- Update Python 2 dependency declarations to new packaging standards
+  (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
+
 * Fri Feb 09 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 20170302-4.gita1c5f7c
 - Escape macros in %%changelog
 
