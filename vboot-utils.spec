@@ -1,8 +1,9 @@
-%define gitshort a1c5f7c
+%define _default_patch_fuzz 2
+%define gitshort 2cc35b0
 
 Name:		vboot-utils
-Version:	20170302
-Release:	5.git%{gitshort}%{?dist}
+Version:	20180531
+Release:	1.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -22,13 +23,11 @@ Patch0:		vboot-utils-00-disable-static-linking.patch
 #make sure get the rpmbuild flags passed in
 Patch1:		vboot-utils-cflags.patch
 
-
-BuildRequires:	compat-openssl10-devel
+BuildRequires:	openssl-devel
 BuildRequires:	trousers-devel
 BuildRequires:	libyaml-devel
 BuildRequires:	xz-devel
 BuildRequires:	libuuid-devel
-
 
 # for the test scripts
 BuildRequires:	python2
@@ -81,6 +80,9 @@ make runtests || true
 %{_bindir}/*
 
 %changelog
+* Sun Jun  3 2018 Peter Robinson <pbrobinson@fedoraproject.org> 20180531-1.2cc35b0
+- New upstream snapshot
+
 * Sun Mar 18 2018 Iryna Shcherbina <ishcherb@redhat.com> - 20170302-5.gita1c5f7c
 - Update Python 2 dependency declarations to new packaging standards
   (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
