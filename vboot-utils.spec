@@ -23,6 +23,7 @@ Patch0:		vboot-utils-00-disable-static-linking.patch
 #make sure get the rpmbuild flags passed in
 Patch1:		vboot-utils-cflags.patch
 
+BuildRequires:  gcc
 BuildRequires:	openssl-devel
 BuildRequires:	trousers-devel
 BuildRequires:	libyaml-devel
