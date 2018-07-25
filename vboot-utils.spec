@@ -24,6 +24,7 @@ Patch0:		vboot-utils-00-disable-static-linking.patch
 Patch1:		vboot-utils-cflags.patch
 
 BuildRequires:  gcc
+BuildRequires:  gcc-c++
 BuildRequires:	openssl-devel
 BuildRequires:	trousers-devel
 BuildRequires:	libyaml-devel
