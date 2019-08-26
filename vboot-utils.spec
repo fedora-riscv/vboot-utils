@@ -1,9 +1,8 @@
-%define _default_patch_fuzz 2
-%define gitshort 2cc35b0
+%define gitshort 595108c0
 
 Name:		vboot-utils
-Version:	20180531
-Release:	4.git%{gitshort}%{?dist}
+Version:	20190823
+Release:	1.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -17,14 +16,9 @@ ExclusiveArch:	%{arm} aarch64 %{ix86} x86_64
 #  git archive --format=tar --prefix=vboot-utils-a1c5f7c/ a1c5f7c | xz > vboot-utils-a1c5f7c.tar.xz
 Source0:	%{name}-%{gitshort}.tar.xz
 
-## Patch0 disabled static building.
-Patch0:		vboot-utils-00-disable-static-linking.patch
-
-#make sure get the rpmbuild flags passed in
-Patch1:		vboot-utils-cflags.patch
-
-BuildRequires:  gcc
-BuildRequires:  gcc-c++
+BuildRequires:	gcc
+BuildRequires:	gcc-c++
+BuildRequires:	glibc-static
 BuildRequires:	openssl-devel
 BuildRequires:	trousers-devel
 BuildRequires:	libyaml-devel
@@ -41,9 +35,6 @@ Pack and sign the kernel, manage gpt partitions.
 
 %prep
 %setup -q -n %{name}-%{gitshort}
-%patch0 -p1 -b .nostatic
-%patch1 -p1 -b .cflags
-
 
 %build
 
@@ -82,6 +73,9 @@ make runtests || true
 %{_bindir}/*
 
 %changelog
+* Mon Aug 26 2019 Peter Robinson <pbrobinson@fedoraproject.org> 20190823.1.git595108c0
+- Rebase to upstream 595108c0 snapshot
+
 * Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 20180531-4.git2cc35b0
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
