@@ -2,7 +2,7 @@
 
 Name:		vboot-utils
 Version:	20190823
-Release:	2.git%{gitshort}%{?dist}
+Release:	3.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -15,6 +15,9 @@ ExclusiveArch:	%{arm} aarch64 %{ix86} x86_64
 #  cd vboot_reference/
 #  git archive --format=tar --prefix=vboot-utils-a1c5f7c/ a1c5f7c | xz > vboot-utils-a1c5f7c.tar.xz
 Source0:	%{name}-%{gitshort}.tar.xz
+
+# Fix FTBFS agsinst gcc10
+Patch0:		vboot-utils-595108c0-gcc10.patch
 
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
@@ -35,6 +38,7 @@ Pack and sign the kernel, manage gpt partitions.
 
 %prep
 %setup -q -n %{name}-%{gitshort}
+%patch0 -p1 -b .gcc10
 
 %build
 
@@ -73,6 +77,9 @@ make runtests || true
 %{_bindir}/*
 
 %changelog
+* Thu Feb 27 2020 Than Ngo <than@redhat.com> - 20190823-3.git
+- Fix FTBFS
+
 * Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 20190823-2.git595108c0
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
