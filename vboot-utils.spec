@@ -2,7 +2,7 @@
 
 Name:		vboot-utils
 Version:	20190823
-Release:	4.git%{gitshort}%{?dist}
+Release:	5.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -68,6 +68,9 @@ rm -rf %{buildroot}/usr/default/
 %{_bindir}/*
 
 %changelog
+* Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 20190823-5.git595108c0
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Sun Mar 01 2020 Peter Robinson <pbrobinson@fedoraproject.org> - 20190823-4.git595108c0
 - Drop tests to drop python2 dep
 
