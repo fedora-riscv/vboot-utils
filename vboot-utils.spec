@@ -19,6 +19,7 @@ Source0:	%{name}-%{gitshort}.tar.xz
 # Fix FTBFS agsinst gcc10
 Patch0:		vboot-utils-595108c0-gcc10.patch
 
+BuildRequires: make
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
 BuildRequires:	glibc-static
