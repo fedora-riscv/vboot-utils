@@ -1,8 +1,8 @@
 %define gitshort 61971455
 
 Name:		vboot-utils
-Version:	20220620
-Release:	10.git%{gitshort}%{?dist}
+Version:	20220621
+Release:	1.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -90,7 +90,7 @@ rm -f %{buildroot}/usr/lib/libvboot_host.a
 %{_datadir}/vboot/devkeys/
 
 %changelog
-* Tue Jun 21 2022 Dorinda Bassey <dbassey@redhat.com> - 20220620-10.git61971455
+* Tue Jun 21 2022 Dorinda Bassey <dbassey@redhat.com> - 20220621-1.git61971455
 - Fix VB2_DEBUG function usage
 - New Upstream snapshot 61971455
 - Clean up spec file
