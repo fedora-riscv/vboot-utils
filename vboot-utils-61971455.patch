@@ -1,0 +1,12 @@
+diff -ru vboot-utils-61971455-orig/futility/updater_utils.c vboot-utils-61971455/futility/updater_utils.c
+--- vboot-utils-61971455-orig/futility/updater_utils.c	2022-06-16 02:45:02.000000000 +0200
++++ vboot-utils-61971455/futility/updater_utils.c	2022-06-20 15:06:24.192678422 +0200
+@@ -700,7 +700,7 @@
+ 	if (!cmd)
+ 		return -1;
+ 
+-	VB2_DEBUG(cmd);
++	VB2_DEBUG("flashrom cmd: %s\n", cmd);
+ 	r = system(cmd);
+ 	free(cmd);
+ 	if (r)

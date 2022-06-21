@@ -1,8 +1,8 @@
-%define gitshort 595108c0
+%define gitshort 61971455
 
 Name:		vboot-utils
-Version:	20190823
-Release:	9.git%{gitshort}%{?dist}
+Version:	20220620
+Release:	10.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
@@ -13,13 +13,13 @@ ExclusiveArch:	%{arm} aarch64 %{ix86} x86_64
 # following commands to generate the tarball:
 #  git clone https://git.chromium.org/git/chromiumos/platform/vboot_reference.git
 #  cd vboot_reference/
-#  git archive --format=tar --prefix=vboot-utils-a1c5f7c/ a1c5f7c | xz > vboot-utils-a1c5f7c.tar.xz
+#  git archive --format=tar --prefix=vboot-utils-61971455/ 61971455 | xz > vboot-utils-61971455.tar.xz
 Source0:	%{name}-%{gitshort}.tar.xz
 
-# Fix FTBFS agsinst gcc10
-Patch0:		vboot-utils-595108c0-gcc10.patch
+# Fix VB2_DEBUG function usage
+Patch0:	vboot-utils-61971455.patch
 
-BuildRequires: make
+BuildRequires:	make
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
 BuildRequires:	glibc-static
@@ -28,6 +28,7 @@ BuildRequires:	trousers-devel
 BuildRequires:	libyaml-devel
 BuildRequires:	xz-devel
 BuildRequires:	libuuid-devel
+BuildRequires:	flashrom-devel
 
 %description
 Verified boot is a collection of utilities helpful for chromebook computer.
@@ -56,19 +57,44 @@ make V=1 ARCH=%{ARCH} COMMON_FLAGS="$RPM_OPT_FLAGS"
 
 
 %install
-make install V=1 DESTDIR=%{buildroot}/usr ARCH=%{ARCH} COMMON_FLAGS="$RPM_OPT_FLAGS"
+make install V=1 DESTDIR=%{buildroot} ARCH=%{ARCH} COMMON_FLAGS="$RPM_OPT_FLAGS"
+mkdir -p %{buildroot}%{_datadir}/vboot/
+cp -rf tests/devkeys %{buildroot}%{_datadir}/vboot/
 
 # Remove unneeded build artifacts
 rm -rf %{buildroot}/usr/lib/pkgconfig/
 rm -rf %{buildroot}/usr/default/
-
+rm -rf %{buildroot}/etc/default/
+rm -rf %{buildroot}/usr/share/vboot/bin/
+rm -f %{buildroot}/usr/bin/chromeos-tpm-recovery
+rm -f %{buildroot}/usr/bin/crossystem
+rm -f %{buildroot}/usr/bin/dev_debug_vboot
+rm -f %{buildroot}/usr/bin/dumpRSAPublicKey
+rm -f %{buildroot}/usr/bin/dump_fmap
+rm -f %{buildroot}/usr/bin/dump_kernel_config
+rm -f %{buildroot}/usr/bin/enable_dev_usb_boot
+rm -f %{buildroot}/usr/bin/gbb_utility
+rm -f %{buildroot}/usr/bin/tpm-nvsize
+rm -f %{buildroot}/usr/bin/tpmc
+rm -f %{buildroot}/usr/bin/vbutil_firmware
+rm -f %{buildroot}/usr/bin/vbutil_key
+rm -f %{buildroot}/usr/bin/vbutil_keyblock
+rm -f %{buildroot}/usr/lib/libvboot_host.a
 
 %files
 %license LICENSE
 %doc README
-%{_bindir}/*
+%{_bindir}/futility
+%{_bindir}/vbutil_kernel
+%{_bindir}/cgpt
+%{_datadir}/vboot/devkeys/
 
 %changelog
+* Tue Jun 21 2022 Dorinda Bassey <dbassey@redhat.com> - 20220620-10.git61971455
+- Fix VB2_DEBUG function usage
+- New Upstream snapshot 61971455
+- Clean up spec file
+
 * Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 20190823-9.git595108c0
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
