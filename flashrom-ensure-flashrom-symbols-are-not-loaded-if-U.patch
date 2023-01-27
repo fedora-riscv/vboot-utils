@@ -1,0 +1,49 @@
+From f9ae6c12bd0b67ee336089ce15d5255d7d6d11b7 Mon Sep 17 00:00:00 2001
+From: Nobel Barakat <nobelbarakat@google.com>
+Date: Tue, 22 Nov 2022 00:40:20 +0000
+Subject: [PATCH] flashrom: ensure flashrom symbols are not loaded if
+ !USE_FLASHROM
+
+The linking process during the installation phase of this package
+breaks if you compile with make USE_FLASHROM=0. A new conditional has
+been added to the make file that prevents utility/crossystem from
+compiling if USE_FLASHROM is either not set or set to the number 0.
+
+BUG=b:256682063
+TEST=cros_run_unit_tests --board amd64-generic --packages vboot_reference
+TEST=env USE="test -flashrom" emerge-amd64-generic vboot_reference
+TEST=env USE="-flashrom" emerge-amd64-generic vboot_reference
+BRANCH=none
+
+Signed-off-by: Nobel Barakat nobelbarakat@google.com
+Change-Id: Ia8cdd24653fdb74c9bb5f4de86b7711b138299cf
+Reviewed-on: https://chromium-review.googlesource.com/c/chromiumos/platform/vboot_reference/+/4045302
+Commit-Queue: Nobel Barakat <nobelbarakat@google.com>
+Reviewed-by: Yu-Ping Wu <yupingso@chromium.org>
+Tested-by: Nobel Barakat <nobelbarakat@google.com>
+---
+ Makefile | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 129ace99a424..cb504ff33a62 100644
+--- a/Makefile
++++ b/Makefile
+@@ -593,10 +593,13 @@ UTIL_BIN_NAMES_SDK = \
+ 	utility/signature_digest_utility \
+ 	utility/verify_data
+ UTIL_BIN_NAMES_BOARD = \
+-	utility/crossystem \
+ 	utility/dumpRSAPublicKey \
+ 	utility/tpmc
+ 
++ifneq ($(filter-out 0,${USE_FLASHROM}),)
++UTIL_BIN_NAMES_BOARD += utility/crossystem
++endif
++
+ UTIL_SCRIPTS_SDK = $(addprefix ${BUILD}/,${UTIL_SCRIPT_NAMES_SDK})
+ UTIL_SCRIPTS_BOARD = $(addprefix ${BUILD}/,${UTIL_SCRIPT_NAMES_BOARD})
+ UTIL_BINS_SDK = $(addprefix ${BUILD}/,${UTIL_BIN_NAMES_SDK})
+-- 
+2.39.1
+
