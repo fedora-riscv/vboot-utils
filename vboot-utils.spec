@@ -2,12 +2,12 @@
 
 Name:		vboot-utils
 Version:	20230127
-Release:	3.git%{gitshort}%{?dist}
+Release:	4.git%{gitshort}%{?dist}
 Summary:	Verified Boot Utility from Chromium OS
 License:	BSD
 URL:		https://chromium.googlesource.com/chromiumos/platform/vboot_reference
 
-ExclusiveArch:	%{arm} aarch64 %{ix86} x86_64
+ExclusiveArch:	%{arm} aarch64 %{ix86} x86_64 riscv64
 
 # The source for this package was pulled from upstream's vcs.  Use the
 # following commands to generate the tarball:
@@ -53,6 +53,9 @@ Pack and sign the kernel, manage gpt partitions.
 %global ARCH i386
 %endif
 
+%ifarch riscv64
+%global ARCH riscv64
+%endif
 
 make V=1 ARCH=%{ARCH} COMMON_FLAGS="$RPM_OPT_FLAGS" USE_FLASHROM=0
 
@@ -91,6 +94,9 @@ rm -f %{buildroot}/usr/lib/libvboot_host.a
 %{_datadir}/vboot/devkeys/
 
 %changelog
+* Fri Mar 08 2024 Songsong Zhang <U2FsdGVkX1@gmail.com> - 20230127-4.git9b08a3c4
+- Add riscv64 support
+
 * Sat Jan 27 2024 Fedora Release Engineering <releng@fedoraproject.org> - 20230127-3.git9b08a3c4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
